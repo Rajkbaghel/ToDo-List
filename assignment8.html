@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        Todo-List All
+    </h1>
+    <button onclick="showall()">
+        Show All
+    </button>
+    <button style="background-color:green" onclick="showcompleted()">
+        Completed
+    </button>
+    <button style="background-color:red" onclick="showpending()">
+        Pending
+    </button>
+    <script>
+        var array = [];
+        window.onload = async () =>{
+            var response = await fetch("https://jsonplaceholder.typicode.com/todos");
+            array = await response.json();
+            showall();
+        }
+        function showall(){
+            var head = document.querySelector("h1");
+            head.innerText ="Todo-List All";
+            for(let i=0;i<array.length;i++){
+                var obj = array[i];
+                var p = document.createElement("p");
+                if(obj.completed){
+                    p.style.color="green";
+                }else{
+                    p.style.color = "red";
+                }
+                p.innerText =obj.title;
+                document.body.appendChild(p);
+            }
+        }
+        function showcompleted(){
+            var head = document.querySelector("h1");
+            head.innerText ="Todo-List Completed";
+            const rem = document.querySelectorAll("p");
+            for(let i=0;i<rem.length;i++){
+                var remove = rem[i];
+                document.body.removeChild(remove);
+            }
+            for(let i=0;i<array.length;i++){
+                var obj = array[i];
+                if(obj.completed){
+                    var p = document.createElement("p");
+                    p.style.color="green";
+                    p.innerText =obj.title;
+                    document.body.appendChild(p);
+                }
+            }
+        }
+        function showpending(){
+            var head = document.querySelector("h1");
+            head.innerText ="Todo-List Pending";
+            const rem = document.querySelectorAll("p");
+            for(let i=0;i<rem.length;i++){
+                var remove = rem[i];
+                document.body.removeChild(remove);
+            }
+            for(let i=0;i<array.length;i++){
+                var obj = array[i];
+                if(!obj.completed){
+                    var p = document.createElement("p");
+                    p.style.color="red";
+                    p.innerText =obj.title;
+                    document.body.appendChild(p);
+                }
+            }
+        }
+    </script>    
+</body>
+</html>
